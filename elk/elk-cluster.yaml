@@ -31,13 +31,13 @@ items:
     name: kb-single-svc
     namespace: elk
   spec:
-    type: LoadBalancer 
+    type: LoadBalancer
     ports:
     - name: http
       port: 5601
-      targetPort: 5601 
+      targetPort: 5601
     selector:
-      app: kb-single            
+      app: kb-single
 
 - apiVersion: apps/v1beta1
   kind: StatefulSet
@@ -95,7 +95,7 @@ items:
 
 - apiVersion: v1
   kind: Service
-  metadata: 
+  metadata:
     name: es-cluster-nodeport
     namespace: elk
   spec:

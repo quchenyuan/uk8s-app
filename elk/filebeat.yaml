@@ -25,12 +25,14 @@ items:
         # json.message_key: log
         # json.keys_under_root: true
       output.elasticsearch:
-        hosts: ['es-single:9200']
-      logging.level: info        
+        hosts: ['es-cluster:9200']
+        # output.file:
+        #   path: /tmp/filebeat
+      logging.level: info
       index: filebeat-
 
 - apiVersion: extensions/v1beta1
-  kind: DaemonSet 
+  kind: DaemonSet
   metadata:
     name: filebeat
     namespace: elk
@@ -51,6 +53,7 @@ items:
           name: filebeat
           args: [
             "-c", "/home/filebeat-config/filebeat.yml",
+            "-d", "*",
             "-e",
           ]
           securityContext:
@@ -62,10 +65,8 @@ items:
             mountPath: /var/log/pods
           - name: varlibdockercontainers
             mountPath: /var/lib/docker/containers
-          - name: "filebeat-volume"
+          - name: filebeat-volume
             mountPath: "/home/filebeat-config"
-        nodeSelector:
-          role: front
         volumes:
           - name: filebeat-storage
             hostPath:

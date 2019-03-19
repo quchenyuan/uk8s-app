@@ -5,6 +5,7 @@ items:
   kind: Deployment
   metadata:
     name: kb-single
+    namespace: elk
   spec:
     replicas: 1
     template:
@@ -27,6 +28,7 @@ items:
   kind: Service
   metadata:
     name: kb-single-svc
+    namespace: elk
   spec:
     type: LoadBalancer
     ports:
@@ -40,6 +42,7 @@ items:
   kind: Deployment
   metadata:
     name: es-single
+    namespace: elk
   spec:
     replicas: 1
     template:
@@ -83,6 +86,7 @@ items:
   kind: Service
   metadata: 
     name: es-single-nodeport
+    namespace: elk
   spec:
     type: NodePort
     ports:
@@ -96,10 +100,12 @@ items:
       nodePort: 31300
     selector:
       app: es-single
+
 - apiVersion: v1
   kind: Service
   metadata:
     name: es-single
+    namespace: elk
   spec:
     clusterIP: None
     ports:
