@@ -72,7 +72,7 @@ items:
           - name: discovery.zen.ping.unicast.hosts
             value: "${ES_SINGLE_NODEPORT_SERVICE_HOST}"
           - name: cluster.name
-            value: "test-single"
+            value: "uk8s-single"
           - name: ES_JAVA_OPTS
             value: "-Xms128m -Xmx128m"
           volumeMounts:

@@ -4,12 +4,12 @@ items:
 - apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: filebeat-config
+    name: uk8s-filebeat
     namespace: elk
     labels:
       k8s-app: filebeat
       kubernetes.io/cluster-service: "true"
-      app: filebeat-config
+      app: uk8s-filebeat
   data:
     filebeat.yml: |
       processors:
@@ -52,7 +52,7 @@ items:
         - image: docker.elastic.co/beats/filebeat:6.4.0
           name: filebeat
           args: [
-            "-c", "/home/filebeat-config/filebeat.yml",
+            "-c", "/home/uk8s-filebeat/filebeat.yml",
             "-d", "*",
             "-e",
           ]
@@ -66,7 +66,7 @@ items:
           - name: varlibdockercontainers
             mountPath: /var/lib/docker/containers
           - name: filebeat-volume
-            mountPath: "/home/filebeat-config"
+            mountPath: "/home/uk8s-filebeat"
         volumes:
           - name: filebeat-storage
             hostPath:
@@ -79,7 +79,7 @@ items:
               path: /var/lib/docker/containers
           - name: filebeat-volume
             configMap:
-              name: filebeat-config
+              name: uk8s-filebeat
 
 - apiVersion: rbac.authorization.k8s.io/v1beta1
   kind: ClusterRoleBinding

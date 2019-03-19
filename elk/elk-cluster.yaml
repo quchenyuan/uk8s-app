@@ -83,7 +83,7 @@ items:
           - name: discovery.zen.minimum_master_nodes
             value: "2"
           - name: cluster.name
-            value: "test-cluster"
+            value: "uk8s-cluster"
           - name: ES_JAVA_OPTS
             value: "-Xms128m -Xmx128m"
           volumeMounts:

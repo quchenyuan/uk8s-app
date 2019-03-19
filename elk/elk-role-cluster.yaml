@@ -87,7 +87,7 @@ items:
           - name: discovery.zen.minimum_master_nodes
             value: "2"
           - name: cluster.name
-            value: "test-cluster"
+            value: "uk8s-cluster"
           - name: node.master
             value: "true"
           - name: node.data
@@ -151,7 +151,7 @@ items:
           - name: discovery.zen.minimum_master_nodes
             value: "2"
           - name: cluster.name
-            value: "test-cluster"
+            value: "uk8s-cluster"
           - name: node.master
             value: "false"
           - name: node.data
