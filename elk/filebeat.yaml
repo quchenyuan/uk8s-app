@@ -13,21 +13,29 @@ items:
   data:
     filebeat.yml: |
       processors:
-        - add_cloud_metadata:
+        - add_kubernetes_metadata:
+            in_cluster: true
+            namespace: elk
+        - drop_event:
+            when:
+              and:
+                - equals:
+                    kubernetes.namespace: elk
+                - or:
+                  - equals:
+                      kubernetes.labels.app: elk-log-pipeline
       filebeat.modules:
       - module: system
       filebeat.inputs:
       - type: log
         paths:
-          - /var/log/containers/*.log
-          - /var/log/*
+          #- /var/log/containers/*.log
+          - /var/log/messages
+          #- /var/log/*
         symlinks: true
-        # json.message_key: log
-        # json.keys_under_root: true
-      output.elasticsearch:
-        hosts: ['es-cluster:9200']
-        # output.file:
-        #   path: /tmp/filebeat
+        include_lines: ['hyperkube']
+      output.logstash:
+        hosts: ["elk-log-pipeline:5044"]
       logging.level: info
       index: filebeat-
 
@@ -49,7 +57,7 @@ items:
           kubernetes.io/cluster-service: "true"
       spec:
         containers:
-        - image: docker.elastic.co/beats/filebeat:6.4.0
+        - image: docker.elastic.co/beats/filebeat:6.6.0
           name: filebeat
           args: [
             "-c", "/home/uk8s-filebeat/filebeat.yml",
@@ -63,10 +71,16 @@ items:
             mountPath: /var/log/containers
           - name: varlogpods
             mountPath: /var/log/pods
+          - name: docker-sock
+            mountPath: /var/run/docker.sock
           - name: varlibdockercontainers
             mountPath: /var/lib/docker/containers
           - name: filebeat-volume
-            mountPath: "/home/uk8s-filebeat"
+            mountPath: "/home/filebeat-config"
+          - name: messages
+            mountPath: /var/log/messages
+
+        serviceAccountName: filebeat
         volumes:
           - name: filebeat-storage
             hostPath:
@@ -74,9 +88,15 @@ items:
           - name: varlogpods
             hostPath:
               path: /var/log/pods
+          - name: docker-sock
+            hostPath:
+              path: /var/run/docker.sock
           - name: varlibdockercontainers
             hostPath:
               path: /var/lib/docker/containers
+          - name: messages
+            hostPath:
+              path: /var/log/messages
           - name: filebeat-volume
             configMap:
               name: uk8s-filebeat
