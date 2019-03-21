@@ -29,9 +29,10 @@ items:
       filebeat.inputs:
       - type: log
         paths:
-          #- /var/log/containers/*.log
+          - /var/log/containers/*.log
           - /var/log/messages
-          #- /var/log/*
+          - /var/log/nginx/*.log
+          - /var/log/*
         symlinks: true
         include_lines: ['hyperkube']
       output.logstash:
@@ -76,9 +77,11 @@ items:
           - name: varlibdockercontainers
             mountPath: /var/lib/docker/containers
           - name: filebeat-volume
-            mountPath: "/home/filebeat-config"
+            mountPath: /home/filebeat-config
           - name: messages
             mountPath: /var/log/messages
+          - name: nginx-log
+            mountPath: /var/log/nginx
 
         serviceAccountName: filebeat
         volumes:
@@ -97,6 +100,9 @@ items:
           - name: messages
             hostPath:
               path: /var/log/messages
+          - name: nginx-log
+            hostPath:
+              path: /var/log/nginx
           - name: filebeat-volume
             configMap:
               name: uk8s-filebeat
