@@ -61,7 +61,7 @@ items:
         - image: docker.elastic.co/beats/filebeat:6.6.0
           name: filebeat
           args: [
-            "-c", "/home/uk8s-filebeat/filebeat.yaml",
+            "-c", "/home/uk8s-filebeat/filebeat.yml",
             "-d", "*",
             "-e",
           ]
@@ -77,7 +77,7 @@ items:
           - name: varlibdockercontainers
             mountPath: /var/lib/docker/containers
           - name: filebeat-volume
-            mountPath: /home/filebeat-config
+            mountPath: /home/uk8s-filebeat
           - name: messages
             mountPath: /var/log/messages
           - name: nginx-log
