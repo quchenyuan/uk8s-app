@@ -8,7 +8,7 @@ spec:
   template:
     metadata:
       labels:
-        app: elk-log-pipeline
+        name: elk-log-pipeline
     spec:
       hostname: elk-log-pipeline
       containers:
