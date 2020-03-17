@@ -39,7 +39,7 @@ metadata:
   namespace: elk
 spec:
   selector:
-    app: elk-log-pipeline
+    name: elk-log-pipeline
   ports:
   - protocol: TCP
     port: 5044
