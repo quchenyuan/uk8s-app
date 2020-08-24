@@ -40,7 +40,7 @@ items:
       logging.level: info
       index: filebeat-
 
-- apiVersion: apps
+- apiVersion: apps/v1
   kind: DaemonSet
   metadata:
     name: filebeat
