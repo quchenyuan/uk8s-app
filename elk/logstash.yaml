@@ -5,6 +5,9 @@ metadata:
   name: elk-log-pipeline
   namespace: elk
 spec:
+  selector:
+    matchLabels:
+      name: elk-log-pipeline
   template:
     metadata:
       labels:
