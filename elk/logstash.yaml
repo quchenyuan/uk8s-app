@@ -1,6 +1,6 @@
 ---
 kind: Deployment
-apiVersion: apps
+apiVersion: apps/v1
 metadata:
   name: elk-log-pipeline
   namespace: elk
